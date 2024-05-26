@@ -18,7 +18,7 @@ export default function App() {
     getAdvice();
   }, []);
 
-//   UseEffect is liye aya kai page reload jab hota tha so state update nhi hoti thi.
+  //   UseEffect is liye aya kai page reload jab hota tha so state update nhi hoti thi.
 
   return (
     <div>
