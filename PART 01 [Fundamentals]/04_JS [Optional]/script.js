@@ -1,3 +1,6 @@
+/*
+//! Please Remove 👆 ****************************************************************
+
 const data = [
   {
     id: 1,
@@ -66,7 +69,7 @@ const data = [
     publicationDate: "1965-01-01",
     author: "Frank Herbert",
     genres: ["science fiction", "novel", "adventure"],
-    hasMovieAdaptation: true,
+    hasMovieAdaptation: false,
     pages: 658,
     translations: {
       spanish: "",
@@ -233,7 +236,7 @@ console.log(`The book has ${pagesRange} pages`);
 // Arrow Function
 const getYear = (str) => str.split("-").join(" ");
 
-// Now jo above me sumery ki thi.
+// Now jo above me summery ki thi.
 const summery = `${title}, a ${pages}-page long book, was written by ${author} and published in ${getYear(
   publicationDate
 )} The book has ${hasMovieAdaptation ? "" : "not"} been adopted as a movie`;
@@ -241,3 +244,168 @@ const summery = `${title}, a ${pages}-page long book, was written by ${author} a
 console.log(summery);
 
 //** Short-Circuiting and Logical Operators: &&, ||, ??
+
+//* (&&) AND
+// Just like if, when value is true so the after && value show
+console.log(true && "Some String");
+console.log(undefined && "Some String");
+console.log(null && "Some String");
+console.log(false && "Some String");
+console.log(hasMovieAdaptation && "This book has a movie");
+
+// falsy: 0, '', undefined, null
+console.log("Taimoor" && "Some String"); //truthy
+console.log(0 && "Some String");
+
+//* (||) OR
+// to set default value if not true
+
+console.log(book.translations.spanish);
+
+// if book.translations.spanish -> undefined so shows NOT TRANSLATED if true so show book.translations.spanish
+const spanishTranslations = book.translations.spanish || "NOT TRANSLATED";
+spanishTranslations;
+
+console.log(book.reviews.librarything.reviewsCount);
+const countWrong = book.reviews.librarything.reviewsCount || "no data found";
+countWrong;
+
+//*  Nullish Coalescing Operator (??)
+// In above (||) is wrong so solve problem
+// But very similar run to the same as (||) operator
+
+// Nullish Coalescing Operator always shows, when except this -> (undefined, null) so shows second value after ??, falsy value and when 0, true, false comes so shows 0, true, false
+console.log(0 ?? "Some String value");
+console.log(undefined ?? "Some String value");
+console.log(null ?? "Some String value");
+console.log(false ?? "Some String value");
+
+const count = book.reviews.librarything.reviewsCount ?? "Some thing String";
+count;
+
+//** Optional Chaining Operator (?)
+// bhaly value undefined hi q na ho so usy haam undefined se rok skhty hai through optional chaining
+// So atleast not show error message
+
+// function getTotalReviewCount(book) {
+//   const goodReads = book.reviews.goodReads.reviewsCount;
+//   const librarything = book.reviews.librarything.reviewsCount;
+
+//   return goodReads + librarything;
+// }
+
+// console.log(getTotalReviewCount(book));
+
+//! In Above Shows Undefined 👆
+
+//* Solution 👇We use Optional Chaining (?) also a good practice use (??) taky value ajaye
+
+function getTotalReviewsCount(book) {
+  const goodReads = book.reviews.goodReads?.reviewsCount ?? 0;
+  const librarything = book.reviews.librarything?.reviewsCount ?? 0;
+  librarything;
+
+  return goodReads + librarything;
+}
+
+console.log(getTotalReviewsCount(book));
+
+//**  Array methods (map, filter, & reduce)*
+//* This method don't mutate the original array but new array based on the original one
+
+//* Array Map Method 
+books;
+
+const x = [1, 2, 3, 4, 5].map((el) => el * 2);
+console.log(x);
+
+const titles = books.map((book) => book.title);
+titles;
+
+const essentialData = books.map((book) => ({
+  title: book.title,
+  author: book.author,
+  reviewsCount: getTotalReviewsCount(book),
+}));
+essentialData;
+
+//* Array Filter Method 
+// So agr value true ho so true wali value ek new array mai ajaye gi baically called as filtered value and if is false so out in an array
+
+// Filter work hi true false pr kerta hai
+
+const longBooks = books.filter((book) => book.pages > 658);
+longBooks;
+
+const longBooksWithMovie = books
+  .filter((books) => books.pages > 500)
+  .filter((book) => book.hasMovieAdaptation);
+longBooksWithMovie;
+
+const adventureBooks = books
+  .filter((books) => books.genres.includes("adventure"))
+  .map((book) => book.title);
+adventureBooks;
+
+//* Array Reduce Method 
+// Most powerful of all array methods in JavaScript
+// Any mathematical operations in numbers
+
+// Read to kr liaye book kai pages but how many pages in all books
+// .reduce(callback (accumulator, book), starterValue/Initial Value (accumulator))
+
+const pagesAllBooks = books.reduce((sum, book) => sum + book.pages, 0);
+pagesAllBooks;
+
+//**  Array methods (sort)
+// Original Array ko bhi change ker deta hai
+// .slice use ker kai phly copy ker lai original array ko
+
+// Ace Order (a - b)
+const arr = [3, 7, 1, 9, 6];
+// const sorted = arr.sort((a, b) => a - b);
+
+// I want not change original array
+const sortedAce = arr.slice().sort((a, b) => a - b);
+
+sortedAce;
+arr;
+
+// Dec Order (b - a)
+const sortedDec = arr.slice().sort((a, b) => b - a);
+arr;
+sortedDec;
+
+const sortedPages = books.sort((a, b) => a.pages - b.pages);
+sortedPages;
+
+//** Working With Immutable Arrays 
+// do not manipulate the underlying data structure, so how to add, delete & update elements in arrays, without changing to original array.
+
+//* 1) How to add, without change to original array
+const newBook = {
+  id: 6,
+  title: "Harry Potter and the chamber of secrets",
+  author: "J. K. Rowling",
+};
+
+const booksAfterAdd = [...books, newBook];
+booksAfterAdd;
+
+//* 2) How to delete without change to original array
+// using filter
+const booksAfterDelete = booksAfterAdd.filter((book) => book.id !== 3);
+booksAfterDelete;
+
+//* 3) How to update without change to original array
+const booksAfterUpdate = booksAfterDelete.map((book) =>
+  book.id === 1 ? { ...book, pages: 12, author: "taimoor" } : book
+);
+booksAfterUpdate;
+
+//! Please Remove 👇 ****************************************************************
+
+*/
+
+//** Asynchronous Javascript: Promises
+// Load data from an external web api
