@@ -406,6 +406,40 @@ booksAfterUpdate;
 //! Please Remove 👇 ****************************************************************
 
 */
-
+//* JS moves on imediately to the next line, JS wait nhi kerti so how solve this problem called 👇
 //** Asynchronous Javascript: Promises
 // Load data from an external web api
+// Fetch Data in the browser we called fetch API's
+
+fetch("https://jsonplaceholder.typicode.com/todos"); //* needs to wait until thats request is processed and then needs download that data from  the server
+
+console.log("taimoor"); //* runs immediately don't need to wait for download
+
+// So how do we wait this fetch so as soon as data is arrived, so use async js technique
+// and return promise
+
+console.log(fetch("https://jsonplaceholder.typicode.com/todos"));
+// error, fulfilled in this state when it is pending..
+
+// fetch("https://jsonplaceholder.typicode.com/todos") // js wait till untill the execute res
+//   .then((res) => res.json()) // when fulfilled
+//   .then((data) => console.log(data)); // data
+
+console.log("taimoor"); //* runs immediately don't need to wait
+
+//* Notice that first run taimoor and then runs apis
+
+//** Promises Methods
+//* How to fetch data using promises methods
+//* Above Same things to fetch data but most  more cleaner to fetch data
+
+async function getTodos() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+  const data = await res.json();
+  console.log(data);
+
+  return data;
+}
+const todos = getTodos();
+console.log(todos); //* See Promise q kai wait nhi kare ga do getTodos now .then kr kai recive kerna parega data
+console.log("Taimoor Khan");
